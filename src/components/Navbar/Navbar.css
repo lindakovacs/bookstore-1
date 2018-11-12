@@ -1,0 +1,66 @@
+/* Bootstrap overrides */
+.navbar {
+  flex-flow: row wrap;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.navbar-brand {
+  display: none;
+  margin: 0;
+  padding: 0;
+}
+.navbar-collapse {
+  flex-grow: unset;
+}
+@media (min-width: 992px) {
+  .navbar {
+    flex-wrap: nowrap; 
+    padding: 0 1rem 0 0;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: rgb(182, 90, 39);
+  }
+  .navbar-brand {
+    display: inline-block;
+  }
+  .navbar-nav {
+    padding-left: 9rem;
+  }
+}
+
+/**** NAVBAR ****/
+.mrr-primary-bg {
+  background-color: rgb(182, 90, 39);
+}
+nav img {
+  width: 292px;
+  height: 63px;
+}
+.mrr-logo {
+  width: 225px;
+  height: 33px;
+  margin-top: 8px;
+}
+nav li {
+  border-top: 1px solid rgba(255, 255, 255, .2);
+}
+nav li:first-child {
+  margin-top: 10px;
+}
+@media (min-width: 576px) {
+  .mrr-logo {
+    width: 280px;
+    height: 41px;
+  }
+}
+@media (min-width: 992px) {
+  .mrr-logo {
+    margin-top: 6px;
+  }
+  nav li{
+    border-top: 0px solid #fff;
+  }
+  nav li:first-child {
+    margin-top: 0;
+  }
+}

@@ -1,0 +1,28 @@
+/* Bootstrap overrides */
+
+.btn-primary {
+  background-color: rgb(182, 90, 39);
+  border-color: rgb(182, 90, 39);
+}
+.input-group input {
+  background-color: #fff;
+  border: 1px solid rgb(182, 90, 39);
+}
+
+/* search-field */
+
+.search-field {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.search-field>p{
+  font-size: 110%;
+  margin-bottom: .5rem;
+}
+.search-field>.input-group {
+  justify-content: center;
+}
+.search-field input {
+  text-align: center;
+  min-width: 250px;
+}

@@ -1,0 +1,62 @@
+/* overall */
+/* ************************ */
+
+.mrr-primary {
+  color: rgb(182, 90, 39);
+}
+.panel {
+  padding: 20px;
+  box-shadow: 0 0 8px 0 #b8b7b7;
+  margin-bottom: 30px;
+}
+.panel-empty p {
+  text-align: center;
+  margin-bottom: 0;
+}
+.media > a {
+  background-color: #000;
+}
+.media > a img:hover {
+  opacity: 0.7;
+}
+h4 {
+  font-weight: 300;
+  color: rgb(182, 90, 39);
+}
+h4:hover {
+  color: rgb(136, 66, 26);
+}
+.media-body {
+  flex: initial;
+}
+.media-body a:hover {
+  text-decoration: none;
+}
+
+/* search-results */
+/* ************************ */
+
+.search-results .media {
+  align-items: center;
+}
+.search-results .media > a img {
+  width: 90px;
+}
+.search-results .media-body p {
+  margin-bottom: 0;
+}
+
+/* my-books */
+/* ************************ */
+
+.my-books img {
+  width: 90px;
+}
+.my-books hr {
+  margin: 2rem 0;
+}
+@media (min-width: 768px) {
+  .my-books img {
+    width: 120px;
+  }
+}
