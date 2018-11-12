@@ -1,35 +1,87 @@
-import React from "react";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import "./BookDetails.css";
-import ChangeStatusMenu from "../ChangeStatusMenu/ChangeStatusMenu"
-import testImage from "../../images/worker-thumb.jpg"
+import ChangeStatusMenu from "../ChangeStatusMenu/ChangeStatusMenu";
+import noImage from "../../images/no-image.jpg";
 
-function BookDetails(props) {
-  return (
-    <div className="book-details">
-    <section><p>BOOK DETAILS</p></section>
-    <div className="panel">
-      <div className="media">
-        <div className="thumb-group">
-          <img src={testImage} alt="book thumbnail"/>
-          <p><i>Currently Reading</i></p>
-        </div>
-        <div className="media-body ml-4">
-          <h3 className="mt-0 search-title">Last Call of the Wind</h3>
-          <h5>A twisty, fun PI Mystery</h5>
-          <p><i>by Libby Kurtch</i></p>
-          <p>Unfazed after finding a body behind the Dumpster of her bar, Janet Black is ready for business as usual until police start eyeing her boyfriend as the possible killer. When the victim's teetotaling daughter decides to take up residence in the corner booth until the murderer is caught, Janet is forced to get involved. She'd rather be dealing with unruly customers, but instead Janet reluctantly mounts her own investigation to find out if the dead man's complicated past could have anything to do with his death, whether an unreliable employee's absence is mere coincidence, and why police are purposefully feeding her bad information about the case. Janet's sharp tongue and coarse personality make her the guilty pleasure heroine you've always wanted. </p>
-          <div className="details">
-            <p>2018</p>
-            <p>375 pages</p>
-            <p>English</p>
+class BookDetails extends Component {
+  state = {
+    book: {},
+    isLoading: false
+  };
+
+  getBookDetails = id => {
+    this.setState({ isLoading: true });
+    return axios
+      .get(`http://localhost:7000/book/${id}`)
+      .then(response => {
+        if (!response.data) {
+          throw new Error("No response from server.");
+        }
+        this.setState({
+          book: response.data.book,
+          isLoading: false
+        });
+      });
+  }
+
+  componentDidMount() {
+    this.getBookDetails(this.props.match.params.id);
+  }
+
+  render() {
+    console.log(this.state.book);
+    console.log(this.state.isLoading);
+    console.log(this.state.book.publishedDate);
+
+    if (!this.state.isLoading) {
+      const id = this.props.match.params.id;
+      const { imageLinks, title, subtitle, authors, description, publishedDate, pageCount, infoLink, shelf } = this.state.book;
+      const authorsLength = authors && authors.length;
+      const authorList = authors && authors.reduce((authors, author, index) => {
+        if (authorsLength === 1) return authors;
+        else if (index === authorsLength - 1) return authors + " & " + author;
+        else return authors + ", " + author;
+      });
+      // const thumbnail = imageLinks.thumbnail ? imageLinks.thumbnail : noImage;
+      // const date = publishedDate.substr(0, 4);
+
+      return (
+        <div className="book-details">
+          <section><p>BOOK DETAILS</p></section>
+          <div className="panel">
+            <div className="media">
+              <div className="thumb-group">
+                {/* <img src={thumbnail} alt="book thumbnail"/> */}
+                <p><i>{shelf}</i></p>
+              </div>
+              <div className="media-body ml-4">
+                <h3 className="mt-0 search-title">{title}</h3>
+                <h5>{subtitle}</h5>
+                <p><i>{authorList}</i></p>
+                <p>{description}</p>
+                <div className="details">
+                  <p>{publishedDate}</p>
+                  <p>{pageCount} pages</p>
+                  {/* <Link to={infoLink}><p className="mt-0 mrr-primary">More info</p></Link> */}
+                </div>
+                <hr/>
+                  <ChangeStatusMenu 
+                    listType="book-details"
+                    status={shelf}
+                    id={id}
+                  />
+              </div>
+            </div>
           </div>
-          <hr/>
-          <ChangeStatusMenu />
         </div>
-      </div>
-    </div>
-  </div>
-  );
+      );
+    } else {
+      console.log("server not responding");
+      return <p>Server not responding. Please try again later.</p> 
+    }
+  }
 }
 
 export default BookDetails;

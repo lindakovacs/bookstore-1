@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./BookList.css";
-import ChangeStatusMenu from "../ChangeStatusMenu/ChangeStatusMenu"
+import ChangeStatusMenu from "../ChangeStatusMenu/ChangeStatusMenu";
+import noImage from "../../images/no-image.jpg";
 
 function BookList(props) {
-  const link = "/book-details";
   const books = props.books;
   const listType = props.listType;
 
@@ -15,14 +15,23 @@ function BookList(props) {
 
         /* loop through the books if they exist */
         books.map((book, index) => {
-          const authors = book.authors.reduce((authors, author) => authors + " " + author);
+          const link = "/book-details/" + book.id;
+          const length = book.authors && book.authors.length;
+          const authorList = book.authors && book.authors.reduce((authors, author, index) => {
+            if (length === 1) return authors;
+            else if (index === length - 1) return authors + " & " + author;
+            else return authors + ", " + author;
+          });
+          const thumbnail = book.imageLinks ? book.imageLinks.thumbnail : noImage;
           return (
-            <section key={book.id} className={listType}>
+            <section key={`${book.id}-${index}`} className={listType}>
               <div className="media">
-                <Link to={link}><img src={book.imageLinks.thumbnail} alt="book thumbnail" /></Link>
+                <Link to={link}>
+                  <img src={thumbnail} alt="book thumbnail" />
+                </Link>
                 <div className="media-body ml-3">
                 <Link to={link}><h4 className="mt-0 mrr-primary">{book.title}</h4></Link>
-                  <p><i>{authors}</i></p>
+                  <p><i>{authorList}</i></p>
 
                   {/* add the Change Status Menu if the list is for My Books */
                     listType==="my-books" && (
@@ -37,7 +46,7 @@ function BookList(props) {
                   )}
                 </div>
               </div>
-              {(books.length === 1) || (index === books.length - 1)  || <hr/>}
+              {(books.length === 1) || (index === books.length - 1) || <hr/>}
             </section>
           );
         })

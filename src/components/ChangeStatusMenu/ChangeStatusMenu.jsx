@@ -6,7 +6,7 @@ class ChangeStatusMenu extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      isLoading: props.isLoading
+      isLoading: false
     };
   }
 

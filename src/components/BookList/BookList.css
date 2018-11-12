@@ -1,6 +1,9 @@
 /* overall */
 /* ************************ */
 
+.media img {
+  border: 1px solid rgb(175, 175, 175);
+}
 .mrr-primary {
   color: rgb(182, 90, 39);
 }
@@ -28,6 +31,7 @@ h4:hover {
 }
 .media-body {
   flex: initial;
+  text-align: left;
 }
 .media-body a:hover {
   text-decoration: none;
@@ -52,7 +56,7 @@ h4:hover {
 .my-books img {
   width: 90px;
 }
-.my-books hr {
+.my-books > hr {
   margin: 2rem 0;
 }
 @media (min-width: 768px) {

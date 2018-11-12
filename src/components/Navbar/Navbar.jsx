@@ -23,7 +23,7 @@ function Navbar(props) {
               My Books
             </NavLink>
           </li>
-          <li className="nav-item active">
+          <li className="nav-item">
             <NavLink to="/search" className="nav-link">
               Search
             </NavLink>

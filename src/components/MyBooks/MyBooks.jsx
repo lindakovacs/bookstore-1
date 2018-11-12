@@ -7,7 +7,7 @@ class MyBooks extends Component {
   state = {
     books: {},
     isLoading: false
-  }
+  };
 
   getMyBooks = () => {
     this.setState({ isLoading: true });
@@ -23,23 +23,20 @@ class MyBooks extends Component {
       });
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.getMyBooks();
   }
 
   render() {
     const categoryClasses = ["future-reads", "currently-reading", "already-read"];
     const books = this.state.books;
-    const listType = "my-books";
 
     return (
-      <div className={listType}>
+      <div className="my-books">
         <section><p>MY BOOKS</p></section>
 
         {this.state.isLoading ? (
-            <div>
-              <h2>Loading</h2>
-            </div> 
+          <p>No response from server. Please try again later</p>
         ) : (
           Object.keys(books).map((category, index) => {
             const categoryClass = categoryClasses[index];
@@ -51,8 +48,7 @@ class MyBooks extends Component {
                   books={this.state.books[category]}
                   isLoading={this.state.isLoading}
                   getMyBooks={this.getMyBooks}
-                  category={category}
-                  listType={listType}
+                  listType="my-books"
                 />
               </div>
             );

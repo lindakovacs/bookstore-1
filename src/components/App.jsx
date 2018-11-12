@@ -15,7 +15,7 @@ class App extends Component {
             <Route exact path="/" component={Search} />
             <Route exact path="/search" component={Search} />
             <Route path="/my-books" component={MyBooks} />
-            <Route path="/book-details" component={BookDetails} />
+            <Route path="/book-details/:id" component={BookDetails} />
           </Switch>
         </main>
       </div>
