@@ -46,6 +46,7 @@ class BookDetails extends Component {
       });
       // const thumbnail = imageLinks.thumbnail ? imageLinks.thumbnail : noImage;
       // const date = publishedDate.substr(0, 4);
+      const synopsis = description.replace(/<\w+>/, "");
 
       return (
         <div className="book-details">
@@ -60,7 +61,7 @@ class BookDetails extends Component {
                 <h3 className="mt-0 search-title">{title}</h3>
                 <h5>{subtitle}</h5>
                 <p><i>{authorList}</i></p>
-                <p>{description}</p>
+                <p>{synopsis}</p>
                 <div className="details">
                   <p>{publishedDate}</p>
                   <p>{pageCount} pages</p>
