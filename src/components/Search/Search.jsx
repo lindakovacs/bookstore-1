@@ -7,18 +7,20 @@ class Search extends Component {
   state = {
     isLoading: false,
     userInput: "",
-    books: {}
+    books: []
   }
 
-  handleOnChange = (userInput) => {
+  // handleOnChange = (userInput) => {
+  //   this.setState ({
+  //     userInput
+  //   })
+  //   this.searchBooks(userInput);
+  // }
+
+  searchBooks = (userInput) => {
     this.setState ({
       userInput
     })
-    // once userInput has been updated we make a request to the server
-    this.searchBooks(userInput);
-  }
-
-  searchBooks = (userInput) => {
     // doesn't make a request if userInput is empty
     if(!userInput) return;
 
@@ -26,12 +28,22 @@ class Search extends Component {
     return axios
       .get(`http://localhost:7000/books/search/${userInput}`)
       .then(response => {
-        if (!response.data)
-          throw new Error("No response from server.");
-        this.setState({
-          books: response.data.books,
-          isLoading: false
-        });
+        console.log(response.data.books);
+        if (!response.data.books) {
+          this.setState({
+            books: [],
+            isLoading: false
+          });
+          throw new Error("No data found");
+        } else {
+          this.setState({
+            books: response.data.books,
+            isLoading: false
+          });
+        }
+      })
+      .catch((error)=> {
+        console.log(error.message);
       });
   }
 
@@ -44,7 +56,7 @@ class Search extends Component {
             type="text" 
             placeholder="Enter title keywords"
             value={this.state.userInput}
-            onChange={e => this.handleOnChange(e.target.value)}
+            onChange={e => this.searchBooks(e.target.value)}
           />
           <div className="input-group-append">
             <button 
@@ -56,19 +68,19 @@ class Search extends Component {
             </button>
           </div>
         </div>
+        {console.log(this.state.books)}
         {// Checks to see if there is a problem loading the page
           this.state.isLoading ? 
-          <p>Server not responding. Please try again later.</p> 
+          <p>Loading...</p> 
 
           // NESTED CONDITIONAL: Checks to see if userInput is empty, if not it renders a list of books
           : ( this.state.userInput && (
           <div className="search-results">
             <section><p>SEARCH RESULTS</p></section>
             <BookList 
-              books={this.state.books}
-              isLoading={this.state.isLoading}
-              searchBooks={this.searchBooks}
               listType="search-results"
+              books={this.state.books}
+              searchBooks={this.searchBooks}
             />
           </div>
           )

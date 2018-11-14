@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import BookList from "../BookList/BookList";
 import "./BookDetails.css";
-import ChangeStatusMenu from "../ChangeStatusMenu/ChangeStatusMenu";
-import noImage from "../../images/no-image.jpg";
 
 class BookDetails extends Component {
   state = {
-    book: {},
+    books: [],
     isLoading: false
   };
 
@@ -17,12 +15,15 @@ class BookDetails extends Component {
       .get(`http://localhost:7000/book/${id}`)
       .then(response => {
         if (!response.data) {
-          throw new Error("No response from server.");
+          throw new Error();
         }
         this.setState({
-          book: response.data.book,
+          books: this.state.books.concat(response.data.book),
           isLoading: false
         });
+      })
+      .catch((error)=> {
+          console.log(error.message);
       });
   }
 
@@ -31,56 +32,21 @@ class BookDetails extends Component {
   }
 
   render() {
-    console.log(this.state.book);
-    console.log(this.state.isLoading);
-    console.log(this.state.book.publishedDate);
-
     if (!this.state.isLoading) {
-      const id = this.props.match.params.id;
-      const { imageLinks, title, subtitle, authors, description, publishedDate, pageCount, infoLink, shelf } = this.state.book;
-      const authorsLength = authors && authors.length;
-      const authorList = authors && authors.reduce((authors, author, index) => {
-        if (authorsLength === 1) return authors;
-        else if (index === authorsLength - 1) return authors + " & " + author;
-        else return authors + ", " + author;
-      });
-      // const thumbnail = imageLinks.thumbnail ? imageLinks.thumbnail : noImage;
-      // const date = publishedDate.substr(0, 4);
-      const synopsis = description.replace(/<\w+>/, "");
-
       return (
         <div className="book-details">
           <section><p>BOOK DETAILS</p></section>
-          <div className="panel">
-            <div className="media">
-              <div className="thumb-group">
-                {/* <img src={thumbnail} alt="book thumbnail"/> */}
-                <p><i>{shelf}</i></p>
-              </div>
-              <div className="media-body ml-4">
-                <h3 className="mt-0 search-title">{title}</h3>
-                <h5>{subtitle}</h5>
-                <p><i>{authorList}</i></p>
-                <p>{synopsis}</p>
-                <div className="details">
-                  <p>{publishedDate}</p>
-                  <p>{pageCount} pages</p>
-                  {/* <Link to={infoLink}><p className="mt-0 mrr-primary">More info</p></Link> */}
-                </div>
-                <hr/>
-                  <ChangeStatusMenu 
-                    listType="book-details"
-                    status={shelf}
-                    id={id}
-                  />
-              </div>
-            </div>
-          </div>
+          <BookList 
+            listType="book-details"
+            books={this.state.books}
+            getMyBooks={this.getMyBooks}
+          />
         </div>
       );
     } else {
-      console.log("server not responding");
-      return <p>Server not responding. Please try again later.</p> 
+      return (
+        <p className="error">Loading...</p> 
+      );
     }
   }
 }

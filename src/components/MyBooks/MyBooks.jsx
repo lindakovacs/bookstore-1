@@ -45,10 +45,9 @@ class MyBooks extends Component {
               <div className={categoryClass} key={categoryClass}>
                 <h2>{categoryName}</h2>
                 <BookList 
-                  books={this.state.books[category]}
-                  isLoading={this.state.isLoading}
-                  getMyBooks={this.getMyBooks}
                   listType="my-books"
+                  books={this.state.books[category]}
+                  getMyBooks={this.getMyBooks}
                 />
               </div>
             );
