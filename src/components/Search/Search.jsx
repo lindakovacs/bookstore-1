@@ -7,15 +7,9 @@ class Search extends Component {
   state = {
     isLoading: false,
     userInput: "",
+    booksFound: false,
     books: []
   }
-
-  // handleOnChange = (userInput) => {
-  //   this.setState ({
-  //     userInput
-  //   })
-  //   this.searchBooks(userInput);
-  // }
 
   searchBooks = (userInput) => {
     this.setState ({
@@ -28,16 +22,18 @@ class Search extends Component {
     return axios
       .get(`http://localhost:7000/books/search/${userInput}`)
       .then(response => {
-        console.log(response.data.books);
+        // throws an error if no response received
         if (!response.data.books) {
-          this.setState({
-            books: [],
-            isLoading: false
-          });
-          throw new Error("No data found");
-        } else {
+          throw new Error();
+          // adds books to state if one or more books found
+        } else if (response.data.books.length > 0) {
           this.setState({
             books: response.data.books,
+            booksFound: true,
+            isLoading: false
+          });
+        } else {
+          this.setState({
             isLoading: false
           });
         }
@@ -70,8 +66,10 @@ class Search extends Component {
         </div>
         {console.log(this.state.books)}
         {// Checks to see if there is a problem loading the page
-          this.state.isLoading ? 
-          <p>Loading...</p> 
+          this.state.isLoading ? (
+          <div className="error">
+            <p>There is a problem loading the page. Please try again later.</p> 
+          </div> )
 
           // NESTED CONDITIONAL: Checks to see if userInput is empty, if not it renders a list of books
           : ( this.state.userInput && (

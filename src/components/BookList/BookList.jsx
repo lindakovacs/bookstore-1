@@ -98,7 +98,11 @@ function BookList(props) {
         })
 
         /* If no books are found, render a simple message  */
-        ) : ( <p>No Books Found.</p> )
+        ) : ( 
+          <div className="error">
+            <p>No Books Found.</p> 
+          </div>
+        )
       }
       </div>
   );

@@ -20,6 +20,9 @@ class MyBooks extends Component {
           books: response.data.books,
           isLoading: false
         });
+      })
+      .catch((error)=> {
+          console.log(error.message);
       });
   }
 
@@ -36,7 +39,9 @@ class MyBooks extends Component {
         <section><p>MY BOOKS</p></section>
 
         {this.state.isLoading ? (
-          <p>No response from server. Please try again later</p>
+          <div className="error">
+            <p>No response from server. Please try again later</p>
+          </div>
         ) : (
           Object.keys(books).map((category, index) => {
             const categoryClass = categoryClasses[index];
