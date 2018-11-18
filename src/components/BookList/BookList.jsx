@@ -40,12 +40,24 @@ function BookList(props) {
                 listType==="book-details" ? (
                   <div className="thumb-group">
                     <img src={thumbnail} alt="book thumbnail"/>
+                    {book.imageLinks ? null : ( 
+                      <div>
+                        <p className="no-image">No image found</p>
+                      </div>
+                      )}
                     <p><i>{statusMap[book.shelf]}</i></p>
                   </div>
                 ) : (
-                  <Link to={link}>
-                    <img src={thumbnail} alt="book thumbnail" />
-                  </Link>
+                  <div className="thumb-group-alt">
+                    <Link to={link}>
+                      <img src={thumbnail} alt="book thumbnail" />
+                    </Link>
+                      { book.imageLinks ? null : ( 
+                      <div>
+                        <p className="no-image">No image found</p>
+                      </div>
+                      )}
+                  </div>
                 )}
                 <div className="media-body ml-3">
 

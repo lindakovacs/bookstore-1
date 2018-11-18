@@ -26,8 +26,10 @@ class BookDetails extends Component {
         } else if (!response.data.book) {
           throw new Error();
         } else {
+          const newBooks = [];
+          newBooks.push(response.data.book);
           this.setState({
-            books: this.state.books.concat(response.data.book),
+            books: newBooks,
             isLoading: false
           });
         }
@@ -63,7 +65,7 @@ class BookDetails extends Component {
           <BookList 
             listType="book-details"
             books={this.state.books}
-            getMyBooks={this.getMyBooks}
+            getBookDetails={this.getBookDetails}
           />
         </div>
       );
