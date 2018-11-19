@@ -40,7 +40,7 @@ const findShelfForBook = (bookId, shelfIndex = 0) => {
   }
 
   const shelf = Object.keys(Bookshelf)[shelfIndex];
-  const shelfBookIds = Bookshelf[shelf].map(book => bookId);
+  const shelfBookIds = Bookshelf[shelf].map(book => book.id);
   if (shelfBookIds.indexOf(bookId) < 0)
     return findShelfForBook(bookId, shelfIndex + 1);
   else return shelf;
