@@ -99,7 +99,7 @@ class Search extends Component {
             // onChange={(e) => this.searchBooks(e.target.value)}
             onChange={e => {
               e.persist();
-              return this.debounce(this.searchBooks(e.target.value), 100);
+              return this.debounce(this.searchBooks(e.target.value), 2000);
             }}
           />
           <div className="input-group-append">
