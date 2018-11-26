@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import BookList from "../BookList/BookList";
 import "./BookDetails.css";
@@ -47,15 +46,13 @@ class BookDetails extends Component {
     if (this.state.isError) {
       return (
         <div className="error">
-          <p>{this.state.errorMessage}</p> 
-          <Link to="/my-books">Return to My Books</Link>
+          <p>{this.state.errorMessage}</p>
         </div>
       );
     } else if (this.state.isLoading) {
       return (
         <div className="error">
-          <p>There is a problem loading the page. Please try again later.</p> 
-          <Link to="/my-books">Return to My Books</Link>
+          <p>Loading...</p>
         </div>
       );
     } else {
