@@ -40,7 +40,7 @@ class MyBooks extends Component {
 
         {this.state.isLoading ? (
           <div className="error">
-            <p>No response from server. Please try again later</p>
+            <p>Loading...</p>
           </div>
         ) : (
           Object.keys(books).map((category, index) => {
