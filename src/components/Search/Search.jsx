@@ -26,8 +26,8 @@ class Search extends Component {
       booksSearched: false,
       books: []
     };
-    // delays search function until user typing is idle for 500 ms
-    this.debouncedSearch = debounce(this.searchBooks, 300);
+    // delays search function until user typing is idle for 200 ms
+    this.debouncedSearch = debounce(this.searchBooks, 200);
   }
 
   searchBooks = userInput => {
