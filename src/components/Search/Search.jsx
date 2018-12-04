@@ -3,6 +3,7 @@ import axios from "axios";
 import BookList from "../BookList/BookList";
 import "./Search.css";
 
+// Credit to Remy Sharps: https://remysharp.com/2010/07/21/throttling-function-calls
 function debounce(func, delay) {
   var timeout;
   return function() {
