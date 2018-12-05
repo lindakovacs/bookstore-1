@@ -20,6 +20,7 @@ class BookDetails extends Component {
           console.log(response.data.error);
           this.setState({
             isError: true,
+            isLoading: false,
             errorMessage: response.data.error
           });
         } else if (!response.data.book) {
@@ -35,6 +36,11 @@ class BookDetails extends Component {
       })
       .catch((error)=> {
           console.log(error.message);
+          this.setState({
+            isError: true,
+            isLoading: false,
+            errorMessage: error.message
+          });
       });
   }
 

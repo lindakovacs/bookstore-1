@@ -14,11 +14,9 @@ Not so much a bookstore as a reading list, I'm calling this web-app "My Reading 
 
 ![My Books page](./screenshots/sg-my-books.jpg?raw=true "My Books page")
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). For more information about React, check out the [React documentation](https://reactjs.org/).
-
 ## Getting Started
 
-These instructions will get a copy of the project up and running on your local machine for development and testing purposes. For more information about the React framework please vist https://reactjs.org/docs/getting-started.html
+These instructions will get a copy of the project up and running on your local machine for development and testing purposes. This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). For more information about the React framework please vist [Reactjs.org](https://reactjs.org/docs/getting-started.html).
 
 ### Prerequisites
 

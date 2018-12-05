@@ -3,9 +3,11 @@ import { shallow } from "enzyme";
 import { expect } from "chai";
 import BookList from "./BookList";
 import ChangeStatusMenu from "../ChangeStatusMenu/ChangeStatusMenu";
+import { spy } from "sinon";
 
 describe("BookList component", () => {
   let wrapper;
+  const getSpy = spy();
   beforeEach(() => {
     wrapper = shallow(
       <BookList
@@ -59,16 +61,20 @@ describe("BookList component", () => {
             shelf: "wantToRead"
           }
         ]}
-        list-type="my-books"
+        listType="my-books"
+        getMyBooks={getSpy}
       />
     );
   });
 
-  // Accurately renders BookList component
-  it.only("renders a media object with thumbnail and book details", () => {
-    console.log(wrapper.props());
-    expect(wrapper.find(".panel")).to.have.lengthOf(1);
-    expect(wrapper.find("img").prop("src")).to.equal("worker-thumb.jpg");
+  // Accurately renders a "my-books" BookList component with one book
+  it.only("renders a 'my-books' <section> tag with a linked thumbnail, linked title, author list, horz rule and ChangeStatusMenu component", () => {
+    expect(wrapper.find(".panel-empty")).to.have.lengthOf(0);
+    // console.log(wrapper.debug());
+    expect(wrapper.find("section").is(".my-books")).to.equal(true);
+    expect(wrapper.find("section").key()).to.equal('qKydDAAAQBAJ-0');
+    expect(wrapper.find("Link")).to.have.lengthOf(2);
+    expect(wrapper.find("img").prop("src")).to.equal("http://books.google.com/books/content?id=qKydDAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api");
     expect(wrapper.find(".media-body")).to.have.lengthOf(1);
     expect(wrapper.find(ChangeStatusMenu)).to.have.lengthOf(1);
   });

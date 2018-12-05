@@ -10,8 +10,9 @@ function BookList(props) {
 
   return (
     <div className={"panel " + (books.length ? "" : "panel-empty")}>
-      {books.length ? (
-        /* loop through the books if any exist */
+    
+      {/* loop through the books if any exist */
+      books.length ? (
         books.map((book, index) => {
           /* prepare variables for use in case they don't exist, contain glitches, etc... */
           const link = "/book-details/" + book.id;

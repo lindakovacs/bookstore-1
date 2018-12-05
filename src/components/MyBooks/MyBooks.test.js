@@ -13,7 +13,6 @@ describe("MyBooks component", () => {
   // Accurately renders a page with failed server query
   it("renders a 'MY BOOKS' header and a 'Looading...' message ", () => {
     let pTags = wrapper.find('p');
-    console.log(wrapper.debug());
     expect(pTags).to.have.lengthOf(2);
     expect(pTags.at(0).text()).to.equal("MY BOOKS");
     expect(pTags.at(1).text()).to.equal("Loading...");
