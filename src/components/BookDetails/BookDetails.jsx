@@ -24,7 +24,7 @@ class BookDetails extends Component {
             errorMessage: response.data.error
           });
         } else if (!response.data.book) {
-          throw new Error();
+          throw new Error("No book found.");
         } else {
           const newBooks = [];
           newBooks.push(response.data.book);

@@ -6,7 +6,9 @@ import "./MyBooks.css";
 class MyBooks extends Component {
   state = {
     books: {},
-    isLoading: false
+    isLoading: false,
+    isError: false,
+    errorMessage: ""
   };
 
   getMyBooks = () => {
@@ -14,14 +16,21 @@ class MyBooks extends Component {
     return axios
       .get('http://localhost:7000/bookshelf')
       .then(response => {
-        if (!response.data)
+        if (!response.data) {
           throw new Error("No response from server.");
-        this.setState({
-          books: response.data.books,
-          isLoading: false
-        });
+        } else {
+          this.setState({
+            books: response.data.books,
+            isLoading: false
+          });
+        }
       })
       .catch((error)=> {
+        this.setState({
+          isLoading: false,
+          isError: true,
+          errorMessage: error.message
+        });
           console.log(error.message);
       });
   }
@@ -38,12 +47,16 @@ class MyBooks extends Component {
       <div className="my-books">
         <section><p>MY BOOKS</p></section>
 
-        {this.state.isLoading ? (
-          <div className="error">
+        {this.state.isLoading
+        ? <div className="error">
             <p>Loading...</p>
-          </div>
-        ) : (
-          Object.keys(books).map((category, index) => {
+          </div>  
+        : ( 
+          this.state.isError
+          ? <div className="error">
+              <p>{this.state.errorMessage}</p>
+            </div> 
+          : Object.keys(books).map((category, index) => {
             const categoryClass = categoryClasses[index];
             const categoryName = categoryClass.replace('-', ' ').replace(/(^\w)|(\b\w)/g, char => char.toUpperCase());
             return (

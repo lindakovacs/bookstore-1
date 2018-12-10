@@ -12,8 +12,8 @@ function BookList(props) {
     <div className={"panel " + (books.length ? "" : "panel-empty")}>
     
       {/* loop through the books if any exist */
-      books.length ? (
-        books.map((book, index) => {
+      books.length 
+      ? (books.map((book, index) => {
           /* prepare variables for use in case they don't exist, contain glitches, etc... */
           const link = "/book-details/" + book.id;
           const thumbnail = book.imageLinks
@@ -38,14 +38,15 @@ function BookList(props) {
             <section key={`${book.id}-${index}`} className={listType}>
               <div className="media">
                 {/* If BOOK DETAILS: render non-linked thumbnail and reading status */
-                listType === "book-details" ? (
+                listType === "book-details" 
+                ? (
                   <div className="thumb-group">
                     <img src={thumbnail} alt="book thumbnail" />
                     <p>
                       <i>{statusMap[book.shelf]}</i>
                     </p>
-                  </div>
-                ) : (
+                  </div> ) 
+                : (
                   /* Else for SEARCH & MY BOOKS: render linked thumbnail only */
                   <Link to={link}>
                     <img src={thumbnail} alt="book thumbnail" />
@@ -54,12 +55,13 @@ function BookList(props) {
 
                 <div className="media-body ml-3">
                   {/* If BOOK DETAILS: render non-linked title and include subtitle if it exists */
-                  listType === "book-details" ? (
+                  listType === "book-details" 
+                  ? (
                     <div>
                       <h2 className="mt-0">{book.title}</h2>
                       {book.subtitle && <h5>{book.subtitle}</h5>}
-                    </div>
-                  ) : (
+                    </div> ) 
+                  : (
                     /* Else for SEARCH & MY BOOKS: render linked title only */
                     <Link to={link}>
                       <h4 className="mt-0 mrr-primary">{book.title}</h4>
@@ -114,8 +116,8 @@ function BookList(props) {
               {books.length === 1 || index === books.length - 1 || <hr />}
             </section>
           );
-        })
-      ) : (
+        })) 
+      : (
         /* If no books are found, render a simple message  */
         <div className="error">
           <p>No Books Found.</p>

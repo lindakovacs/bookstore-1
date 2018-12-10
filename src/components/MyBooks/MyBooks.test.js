@@ -1,38 +1,75 @@
 import React from 'react';
+import axios from 'axios';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
+import { mock, stub } from 'sinon';
 import MyBooks from './MyBooks';
 import BookList from '../BookList/BookList';
 
-describe("MyBooks component", () => {
-  let wrapper;
-  beforeEach(() => {
+let response, wrapper, axiosStub, axiosMock;
+
+describe("MyBooks service via componentDidMount", () => {
+  axiosMock = mock(axios);
+  it("calls getMyBooks with correct url and sets state as if no response is received", () => {
+    response = { data: { books: { title: "book" }}};
+    const expectedUrl = `http://localhost:7000/bookshelf`;
+    axiosMock
+      .expects('get')
+      .withArgs(expectedUrl)
+      .once()
+      .returns(Promise.resolve(response));
     wrapper = shallow( <MyBooks /> );
+    axiosMock.verify();
+    expect(wrapper.state().isLoading).to.equal(true);
+    expect(wrapper.find("p").at(1).text()).to.equal("Loading...");
   });
+  axiosMock.restore();
+});
 
-  // Accurately renders a page with failed server query
-  it("renders a 'MY BOOKS' header and a 'Looading...' message ", () => {
-    let pTags = wrapper.find('p');
-    expect(pTags).to.have.lengthOf(2);
-    expect(pTags.at(0).text()).to.equal("MY BOOKS");
-    expect(pTags.at(1).text()).to.equal("Loading...");
-  });
+describe.only("various responses to getMyBooks request", () => {
+  afterEach(() => { axiosStub.restore() });
 
-  // Accurately renders a page with successful response from server
-  it("renders a 'MY BOOKS' header and three category headers & booklists", () => {
-    wrapper.setState({ 
-      books: { wantToRead: [], currentlyReading: [], read: [] }, 
-      isLoading: false
+  describe("getBookDetails - request resolved but response empty", () => {
+    beforeEach(() => {
+      response = {};
+      axiosStub = stub(axios, "get").resolves(response);
+      wrapper = shallow( <MyBooks /> );
     });
-    let pTag = wrapper.find('p');
-    let categories = wrapper.find('h2');
-    let lists = wrapper.find(BookList);
-    expect(pTag).to.have.lengthOf(1);
-    expect(pTag.at(0).text()).to.equal("MY BOOKS");
-    expect(categories).to.have.lengthOf(3);
-    expect(categories.at(0).text()).to.equal("Future Reads");
-    expect(categories.at(1).text()).to.equal("Currently Reading");
-    expect(categories.at(2).text()).to.equal("Already Read");
-    expect(lists).to.have.lengthOf(3);
+    it("updates state", () => {
+      expect(myBooksSpy.throws()).to.equal(true);
+      // expect(consoleSpy.calledOnce()).to.equal(true);
+      // expect(wrapper.state().isError).to.equal(true);
+      // expect(wrapper.state().isLoading).to.equal(false);
+      // expect(wrapper.state().errorMessage).to.equal("No book found.");
+      // expect(wrapper.find("p").text()).to.equal("No book found.");
+    });
   });
+
+  // describe("getBookDetails - request resolved with books", () => {
+  //   beforeEach(() => {
+  //     response = { data: { book: { title: "book" }}};
+  //     axiosStub = stub(axios, "get").resolves(response);
+  //     wrapper = shallow( <MyBooks /> );
+  //   });
+  //   it("updates state", () => {
+  //     expect(wrapper.state().isError).to.equal(false);
+  //     expect(wrapper.state().isLoading).to.equal(false);
+  //     expect(wrapper.state().books[0].title).to.equal("book");
+  //     expect(wrapper.find("p").text()).to.equal("BOOK DETAILS");
+  //   });
+  // });
+
+  // describe("getBookDetails - request rejected", () => {
+  //   beforeEach(() => {
+  //     response = { message: "test" };
+  //     axiosStub = stub(axios, "get").rejects(response);
+  //     wrapper = shallow( <MyBooks /> );
+  //   });
+  //   it("updates state", () => {
+  //     expect(wrapper.state().isError).to.equal(true);
+  //     expect(wrapper.state().isLoading).to.equal(false);
+  //     expect(wrapper.state().errorMessage).to.equal("test");
+  //     expect(wrapper.find("p").text()).to.equal("test");
+  //   });
+  // });
 });

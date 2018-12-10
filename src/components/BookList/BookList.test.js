@@ -3,11 +3,9 @@ import { shallow } from "enzyme";
 import { expect } from "chai";
 import BookList from "./BookList";
 import ChangeStatusMenu from "../ChangeStatusMenu/ChangeStatusMenu";
-import { spy } from "sinon";
 
 describe("BookList component", () => {
   let wrapper;
-  const getSpy = spy();
   beforeEach(() => {
     wrapper = shallow(
       <BookList
@@ -16,66 +14,68 @@ describe("BookList component", () => {
             id: "qKydDAAAQBAJ",
             title: "Add a Pinch",
             subtitle: "Easier, Faster, Fresher Southern Classics",
-            authors: ["Robyn Stone"],
+            authors: ["Robyn Stone", "John Smith", "Sally Jones"],
             publisher: "Clarkson Potter",
             publishedDate: "2017-03-28",
-            description:
-              "With a foreword by Ree Drummond, this beautiful book has 100 easier, faster, lightened-up Southern recipes, from the blogger behind the popular Add a Pinch website.",
-            industryIdentifiers: [
-              {
-                type: "ISBN_13",
-                identifier: "9780553496420"
-              },
-              {
-                type: "ISBN_10",
-                identifier: "0553496425"
-              }
-            ],
-            readingModes: {
-              text: true,
-              image: false
-            },
+            description: "book description",
             pageCount: 240,
-            printType: "BOOK",
-            categories: ["Cooking"],
-            maturityRating: "NOT_MATURE",
-            allowAnonLogging: false,
-            contentVersion: "1.2.1.0.preview.2",
-            panelizationSummary: {
-              containsEpubBubbles: false,
-              containsImageBubbles: false
-            },
             imageLinks: {
-              smallThumbnail:
-                "http://books.google.com/books/content?id=qKydDAAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
-              thumbnail:
-                "http://books.google.com/books/content?id=qKydDAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+              thumbnail: "http://www.google.com"
             },
-            language: "en",
-            previewLink:
-              "http://books.google.com/books?id=qKydDAAAQBAJ&printsec=frontcover&dq=cooking+salmon:intitle&hl=&cd=1&source=gbs_api",
-            infoLink:
-              "https://play.google.com/store/books/details?id=qKydDAAAQBAJ&source=gbs_api",
-            canonicalVolumeLink:
-              "https://market.android.com/details?id=book-qKydDAAAQBAJ",
+            infoLink: "https://www.yahoo.com",
             shelf: "wantToRead"
           }
         ]}
-        listType="my-books"
-        getMyBooks={getSpy}
       />
     );
   });
 
-  // Accurately renders a "my-books" BookList component with one book
-  it.only("renders a 'my-books' <section> tag with a linked thumbnail, linked title, author list, horz rule and ChangeStatusMenu component", () => {
+  it("renders a 'my-books' BookList component with one book", () => {
+    wrapper.setProps({ listType: "my-books" });
     expect(wrapper.find(".panel-empty")).to.have.lengthOf(0);
-    // console.log(wrapper.debug());
     expect(wrapper.find("section").is(".my-books")).to.equal(true);
     expect(wrapper.find("section").key()).to.equal('qKydDAAAQBAJ-0');
     expect(wrapper.find("Link")).to.have.lengthOf(2);
-    expect(wrapper.find("img").prop("src")).to.equal("http://books.google.com/books/content?id=qKydDAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api");
-    expect(wrapper.find(".media-body")).to.have.lengthOf(1);
+    expect(wrapper.find("img").prop("src")).to.equal("http://www.google.com");
+    expect(wrapper.find("i").text()).to.equal("By Robyn Stone, John Smith & Sally Jones");
     expect(wrapper.find(ChangeStatusMenu)).to.have.lengthOf(1);
+    expect(wrapper.find("hr")).to.have.lengthOf(1);
+    expect(wrapper.find(".error")).to.have.lengthOf(0);
+  });
+
+  it("renders a 'search-results' BookList component with one book (only testing code specific to search-results)", () => {
+    wrapper.setProps({ listType: "search-results" });
+    expect(wrapper.find("section").is(".search-results")).to.equal(true);
+    expect(wrapper.find(ChangeStatusMenu)).to.have.lengthOf(0);
+  });
+
+  it("renders a 'book-details' BookList component with one book", () => {
+    wrapper.setProps({ listType: "book-details" });
+    expect(wrapper.find(".panel-empty")).to.have.lengthOf(0);
+    expect(wrapper.find("section").is(".book-details")).to.equal(true);
+    expect(wrapper.find("section").key()).to.equal('qKydDAAAQBAJ-0');
+    expect(wrapper.find(".thumb-group")).to.have.lengthOf(1);
+    expect(wrapper.find("Link")).to.have.lengthOf(0);
+    expect(wrapper.find("i")).to.have.lengthOf(2);
+    expect(wrapper.find("img").prop("src")).to.equal("http://www.google.com");
+    expect(wrapper.find("i").at(0).text()).to.equal("Future Reads");
+    expect(wrapper.find("h2").text()).to.equal("Add a Pinch");
+    expect(wrapper.find("h5").text()).to.equal("Easier, Faster, Fresher Southern Classics");
+    expect(wrapper.find("i").at(1).text()).to.equal("By Robyn Stone, John Smith & Sally Jones");
+    expect(wrapper.find("p").at(2).text()).to.equal("book description");
+    expect(wrapper.find("p").at(3).text()).to.equal("2017");
+    expect(wrapper.find("p").at(4).text()).to.equal("240 pages");
+    expect(wrapper.find("a").prop("href")).to.equal("https://www.yahoo.com");
+    expect(wrapper.find("a").text()).to.equal("More info");
+    expect(wrapper.find(ChangeStatusMenu)).to.have.lengthOf(1);
+    expect(wrapper.find("hr")).to.have.lengthOf(1);
+    expect(wrapper.find(".error")).to.have.lengthOf(0);
+  });
+
+  it("renders a BookList component with no books", () => {
+    wrapper.setProps({ books: [] });
+    expect(wrapper.find(".panel-empty")).to.have.lengthOf(1);
+    expect(wrapper.find("p")).to.have.lengthOf(1);
+    expect(wrapper.find("p").text()).to.equal("No Books Found.");
   });
 });
