@@ -17,7 +17,7 @@ class MyBooks extends Component {
       .get('http://localhost:7000/bookshelf')
       .then(response => {
         if (!response.data) {
-          throw new Error("No response from server.");
+          throw new Error("Invalid response from server.");
         } else {
           this.setState({
             books: response.data.books,

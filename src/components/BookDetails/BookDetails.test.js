@@ -89,8 +89,8 @@ describe("various responses to getBookDetails request", () => {
     it("updates state", () => {
       expect(wrapper.state().isError).to.equal(true);
       expect(wrapper.state().isLoading).to.equal(false);
-      expect(wrapper.state().errorMessage).to.equal("No book found.");
-      expect(wrapper.find("p").text()).to.equal("No book found.");
+      expect(wrapper.state().errorMessage).to.equal("Invalid response from server.");
+      expect(wrapper.find("p").text()).to.equal("Invalid response from server.");
     });
   });
 });

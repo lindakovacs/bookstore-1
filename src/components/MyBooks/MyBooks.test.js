@@ -4,7 +4,6 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import { mock, stub } from 'sinon';
 import MyBooks from './MyBooks';
-import BookList from '../BookList/BookList';
 
 let response, wrapper, axiosStub, axiosMock;
 
@@ -26,50 +25,60 @@ describe("MyBooks service via componentDidMount", () => {
   axiosMock.restore();
 });
 
-describe.only("various responses to getMyBooks request", () => {
+describe("various responses to getMyBooks request", () => {
   afterEach(() => { axiosStub.restore() });
 
-  describe("getBookDetails - request resolved but response empty", () => {
+  describe("getMyBooks - request resolved but response empty", () => {
     beforeEach(() => {
       response = {};
       axiosStub = stub(axios, "get").resolves(response);
       wrapper = shallow( <MyBooks /> );
     });
     it("updates state", () => {
-      expect(myBooksSpy.throws()).to.equal(true);
-      // expect(consoleSpy.calledOnce()).to.equal(true);
-      // expect(wrapper.state().isError).to.equal(true);
-      // expect(wrapper.state().isLoading).to.equal(false);
-      // expect(wrapper.state().errorMessage).to.equal("No book found.");
-      // expect(wrapper.find("p").text()).to.equal("No book found.");
+      const books = Object.values(wrapper.state().books)[0];
+      expect(books).to.equal(undefined);
+      expect(wrapper.state().isLoading).to.equal(false);
+      expect(wrapper.state().isError).to.equal(true);
+      expect(wrapper.state().errorMessage).to.equal("Invalid response from server.");
+      expect(wrapper.find("p").at(1).text()).to.equal("Invalid response from server.");
     });
   });
 
-  // describe("getBookDetails - request resolved with books", () => {
-  //   beforeEach(() => {
-  //     response = { data: { book: { title: "book" }}};
-  //     axiosStub = stub(axios, "get").resolves(response);
-  //     wrapper = shallow( <MyBooks /> );
-  //   });
-  //   it("updates state", () => {
-  //     expect(wrapper.state().isError).to.equal(false);
-  //     expect(wrapper.state().isLoading).to.equal(false);
-  //     expect(wrapper.state().books[0].title).to.equal("book");
-  //     expect(wrapper.find("p").text()).to.equal("BOOK DETAILS");
-  //   });
-  // });
+  describe("getMyBooks - request resolved with books", () => {
+    beforeEach(() => {
+      response = { data: {
+        books: { 
+          wantToRead: [{  "book": "book 1" }],
+          currentlyReading: [{ "book": "book 2" }],
+          read: []
+        }
+      }};
+      axiosStub = stub(axios, "get").resolves(response);
+      wrapper = shallow( <MyBooks /> );
+    });
+    it("updates state", () => {
+      expect(wrapper.state().books.wantToRead[0].book).to.equal("book 1");
+      expect(wrapper.state().books.currentlyReading[0].book).to.equal("book 2");
+      expect(wrapper.state().books.read[0]).to.equal(undefined);
+      expect(wrapper.state().isLoading).to.equal(false);
+      expect(wrapper.state().isError).to.equal(false);
+      expect(wrapper.state().errorMessage).to.equal("");
+    });
+  });
 
-  // describe("getBookDetails - request rejected", () => {
-  //   beforeEach(() => {
-  //     response = { message: "test" };
-  //     axiosStub = stub(axios, "get").rejects(response);
-  //     wrapper = shallow( <MyBooks /> );
-  //   });
-  //   it("updates state", () => {
-  //     expect(wrapper.state().isError).to.equal(true);
-  //     expect(wrapper.state().isLoading).to.equal(false);
-  //     expect(wrapper.state().errorMessage).to.equal("test");
-  //     expect(wrapper.find("p").text()).to.equal("test");
-  //   });
-  // });
+  describe("getMyBooks - request rejected", () => {
+    beforeEach(() => {
+      response = { message: "test" };
+      axiosStub = stub(axios, "get").rejects(response);
+      wrapper = shallow( <MyBooks /> );
+    });
+    it("updates state", () => {
+      const books = Object.values(wrapper.state().books)[0];
+      expect(books).to.equal(undefined);
+      expect(wrapper.state().isLoading).to.equal(false);
+      expect(wrapper.state().isError).to.equal(true);
+      expect(wrapper.state().errorMessage).to.equal("test");
+      expect(wrapper.find("p").at(1).text()).to.equal("test");
+    });
+  });
 });

@@ -4,7 +4,7 @@ import navPhoto from "../../images/MyReadingRoom-nav-photo.jpg";
 import navLogo from "../../images/MyReadingRoom-logo.svg";
 import "./Navbar.css";
 
-function Navbar(props) {
+function Navbar() {
   return (
     <nav className="navbar navbar-dark navbar-expand-lg mrr-primary-bg">
       <div className="navbar-brand" href="#">

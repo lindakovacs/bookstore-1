@@ -40,9 +40,8 @@ class Search extends Component {
       .get(`http://localhost:7000/books/search/${userInput}`)
       .then(response => {
         if (!response.data.books) {
-          throw new Error("No response from server");
-          // adds books to state if one or more books found
-        } else {
+          throw new Error("Invalid response from server");
+        } else { // adds books to state if one or more books found
           this.setState({
             books: response.data.books,
             booksSearched: true,
@@ -51,6 +50,10 @@ class Search extends Component {
         }
       })
       .catch(error => {
+        this.setState({
+          isLoading: false,
+          booksSearched: true
+        });
         console.log(error.message);
       });
   };

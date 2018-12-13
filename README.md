@@ -39,7 +39,9 @@ Alternatively you can use `npm install` and `npm start` to start the app and the
 
 ## Unit Tests
 
-Tests are still under construction
+`App.test.js` `BookDetails.test.js` `BookList.test.js` `ChangeStatusMenu.test.js` `MyBooks.test.js` `Navbar.test.js` `Search.test.js`
+
+To run all tests, cd into the repo and type `npm run test` followed by `a`
 
 ## Author
 
